@@ -29,25 +29,24 @@ const Index = () => {
       {state.isModalOpen && (
         <Modal closeModal={closeModal} modalContent={state.modalContent} />
       )}
-      <form onSubmit={handleSubmit} className='form'>
+      <form onSubmit={handleSubmit} className="form">
         <div>
           <input
-            type='text'
+            type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
         </div>
-        <button type='submit'>add </button>
+        <button type="submit">add </button>
       </form>
       {state.people.map((person) => {
         return (
-          <div key={person.id} className='item'>
+          <div key={person.id} className="item">
             <h4>{person.name}</h4>
             <button
               onClick={() =>
                 dispatch({ type: 'REMOVE_ITEM', payload: person.id })
-              }
-            >
+              }>
               remove
             </button>
           </div>
