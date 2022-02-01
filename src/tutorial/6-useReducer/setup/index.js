@@ -3,25 +3,49 @@ import Modal from './Modal';
 import { data } from '../../../data';
 // reducer function
 
-const Index = () => {
-  const [people, setPeople] = useState(data);
-  const [showModal, setShowModal] = useState(false);
-  const [name, setName] = useState('');
+const reducer = (state, action) => {
+  if (action.type === 'ADD_PERSON') {
+    return {
+      ...state,
+      people: [...state.people, action.payload],
+      isModalShown: true,
+      modalContent: 'item added',
+    };
+  }
+  if (action.type === 'NO_VALUE') {
+    return {
+      ...state,
+      isModalShown: true,
+      modalContent: 'Please enter value.',
+    };
+  }
 
+  throw new Error('No matching action type.');
+};
+
+const defaultState = {
+  people: [],
+  isModalShown: false,
+  modalContent: 'hello world',
+};
+
+const Index = () => {
+  const [name, setName] = useState('');
+  const [state, dispatch] = useReducer(reducer, defaultState);
   const handleSubmit = (e) => {
     e.preventDefault();
     if (name) {
-      setShowModal(true);
-      setPeople([...people, { id: new Date().getTime().toString(), name }]);
+      const newItem = { id: new Date().getTime().toString(), name };
       setName('');
+      dispatch({ type: 'ADD_PERSON', payload: newItem });
     } else {
-      setShowModal(true);
+      dispatch({ type: 'NO_VALUE' });
     }
   };
 
   return (
     <>
-      {showModal && <Modal />}
+      {state.isModalShown && <Modal modalContent={state.modalContent} />}
       <form className='form' action='' onSubmit={handleSubmit}>
         <div>
           <input
@@ -32,7 +56,7 @@ const Index = () => {
         </div>
         <button type='submit'>add</button>
       </form>
-      {people.map((person) => (
+      {state.people.map((person) => (
         <div key={person.id}>
           <h4>{person.name}</h4>
         </div>
