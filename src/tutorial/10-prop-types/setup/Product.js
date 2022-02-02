@@ -6,9 +6,9 @@ const Product = ({ image, name, price }) => {
   console.log({ image, name, price });
   return (
     <article className='product'>
-      <img src={image.url || defaultImage} alt='product image' />
+      <img src={(image && image.url) || defaultImage} alt='product image' />
       <h4>{name}</h4>
-      <p>${price}</p>
+      <p>${price || 3.99}</p>
     </article>
   );
 };
@@ -19,10 +19,10 @@ Product.propTypes = {
   price: PropTypes.number.isRequired,
 };
 
-Product.defaultProps = {
-  name: 'default name',
-  price: 3.99,
-  image: defaultImage,
-};
+// Product.defaultProps = {
+//   name: 'default name',
+//   price: 3.99,
+//   image: defaultImage,
+// };
 
 export default Product;
